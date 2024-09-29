@@ -1,66 +1,52 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Тестовое задание Laravel + Postgres + JWT + Docker + Swagger
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Требования
 
-## About Laravel
+1. Создайте RESTful API для регистрации пользователей, входа и выхода из системы.
+2. Реализуйте авторизацию пользователей с использованием JWT (JSON Web Tokens).
+3. После входа пользователь должен иметь возможность создавать, читать, обновлять и удалять свои заметки через API.
+4. Используйте паттерн Repository для работы с данными.
+5. Предусмотрите механизм обработки ошибок и валидацию входных данных.
+6. Интегрируйте Docker для локального развертывания и тестирования проекта.
+7. Реализуйте простую документацию к вашему API.
+8. Добавьте кэширование запросов для улучшения производительности.
+9. Реализуйте механизм логирования событий в вашем приложении.
+10. Добавьте тесты для API с использованием фреймворка PHPUnit.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Использованные инструменты
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Laravel
+- Docker
+- PostgreSQL
+- JWT (JSON Web Tokens)
+- PHPUnit
+- Swagger
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Установка и запуск
 
-## Learning Laravel
+### Шаг 1: Клонирование репозитория
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```sh
+git clone https://github.com/balguzh1nov/testovoe_laravel
+cd https://github.com/balguzh1nov/testovoe_laravel
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Шаг 2: Запуск Docker контейнеров
+docker-compose up --build
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+--Выполнение миграций базы данных
+docker-compose exec app php artisan migrate
 
-## Laravel Sponsors
+--Запустите тесты с использованием PHPUnit:
+docker-compose exec app ./vendor/bin/phpunit
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
+```
+![image](https://github.com/balguzh1nov/testovoe_laravel/assets/118799235/757dfb37-751b-475f-93ab-f02cadca6609)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+![image](https://github.com/balguzh1nov/testovoe_laravel/assets/118799235/8e32b661-a381-463d-a334-80accefb3e05)
 
-## Contributing
+![image](https://github.com/balguzh1nov/testovoe_laravel/assets/118799235/317351fd-3e9d-4356-8a24-735c7f434413)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+![image](https://github.com/balguzh1nov/testovoe_laravel/assets/118799235/ee68d680-e483-4af7-927a-45eb28a5b0b2)
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+![image](https://github.com/balguzh1nov/testovoe_laravel/assets/118799235/b8bfdd16-5b7e-473c-abdf-8d253472b882)
