@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  ####################################################################################################
+  # Apache2
+  ####################################################################################################
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: myapp
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./000-default.conf:/etc/apache2/sites-available/000-default.conf
+    depends_on:
+      - postgres
+      - redis
+      - mysql
+
+  ####################################################################################################
+  # DATABASE (MySQL)
+  ####################################################################################################
+  mysql:
+      image: mysql:8
+      ports:
+          - 3306:3306
+      networks:
+          - default
+      environment:
+          MYSQL_USERNAME: "root"
+          MYSQL_PASSWORD: "root"
+          MYSQL_ROOT_PASSWORD: "root"
+          MYSQL_DATABASE: "laravel"
+          MYSQL_ROOT_HOST: "%"
+      volumes:
+          - mysqldata:/var/lib/mysql
+          - mysqldata:/var/log/mysql
+          - mysqldata:/etc/mysql/conf.d/my.cnf
+          - mysqldata:/docker-entrypoint-initdb.d
+
+
+  ####################################################################################################
+  # Redis
+  ####################################################################################################
+  redis:
+    image: redis:latest
+    environment:
+        - REDIS_APPENDONLY=yes
+        - REDIS_APPENDFSYNC=always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - 6379:6379
+
+  ####################################################################################################
+  # DATABASE (Postgres)
+  ####################################################################################################
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: laravel
+    volumes:
+      - datapostgres:/var/lib/postgresql/data
+
+volumes:
+    datapostgres:
+    redis_data:
+    mysqldata:
+
