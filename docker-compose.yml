@@ -19,7 +19,7 @@ services:
       - redis
       - mysql
 
-  ####################################################################################################
+      ####################################################################################################
   # DATABASE (MySQL)
   ####################################################################################################
   mysql:
@@ -35,11 +35,10 @@ services:
           MYSQL_DATABASE: "laravel"
           MYSQL_ROOT_HOST: "%"
       volumes:
-          - mysqldata:/var/lib/mysql
+          - mysqldata:/var/lib/mysq
           - mysqldata:/var/log/mysql
           - mysqldata:/etc/mysql/conf.d/my.cnf
           - mysqldata:/docker-entrypoint-initdb.d
-
 
   ####################################################################################################
   # Redis
@@ -74,4 +73,3 @@ volumes:
     datapostgres:
     redis_data:
     mysqldata:
-

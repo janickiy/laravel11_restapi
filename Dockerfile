@@ -3,6 +3,7 @@ FROM php:8.3-apache
 
 # Установка необходимых расширений PHP и инструментов
 RUN apt-get update && apt-get install -y \
+    rsyslog \
     git \
     unzip \
     zip \
@@ -13,10 +14,8 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     libzip-dev \
     npm \
-   # mbstring \
-   # mysqli \
     libpq-dev \
-    && docker-php-ext-install zip exif bcmath mysqli pdo pdo_pgsql pgsql pdo_mysql
+    && docker-php-ext-install exif bcmath mysqli pdo pdo_pgsql pgsql pdo_mysql
 
 
 # intl
@@ -24,17 +23,33 @@ RUN apt-get install -y libicu-dev \
   && docker-php-ext-configure intl \
   && docker-php-ext-install intl
 
-# gd
+# Установка gd
 RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
 docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ && \
 docker-php-ext-install gd
 
-# Install Xdebug extension
+# Установка Xdebug extension
 RUN pecl install xdebug \
     # Enable xdebug
     && docker-php-ext-enable xdebug
 
-RUN apt-get install -y memcached
+# Установка memcached
+RUN apt-get install -y libmemcached-dev zlib1g-dev && \
+pecl install memcached \
+
+RUN docker-php-ext-enable memcached
+
+# Установка phalcon
+RUN pecl install phalcon-5.6.0 && docker-php-ext-enable phalcon
+
+#zip
+RUN pecl install zip && docker-php-ext-enable zip
+
+
+# Install swool
+RUN pecl install swoole && docker-php-ext-enable swoole
+RUN apt-get install -y libpcre3-dev software-properties-common
+
 
 # pcov
 RUN pecl install pcov && docker-php-ext-enable pcov
