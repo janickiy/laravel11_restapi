@@ -35,10 +35,10 @@ services:
           MYSQL_DATABASE: "laravel"
           MYSQL_ROOT_HOST: "%"
       volumes:
-          - mysqldata:/var/lib/mysq
-          - mysqldata:/var/log/mysql
-          - mysqldata:/etc/mysql/conf.d/my.cnf
-          - mysqldata:/docker-entrypoint-initdb.d
+          - ./docker/mysql/lib:/var/lib/mysql
+          - ./docker/mysql/log:/var/log/mysql
+          - ./docker/mysql/conf:/etc/mysql/conf.d/my.cnf
+          - ./docker/mysql:/docker-entrypoint-initdb.d
 
   ####################################################################################################
   # Redis
@@ -50,7 +50,7 @@ services:
         - REDIS_APPENDFSYNC=always
     command: redis-server --appendonly yes
     volumes:
-      - redis_data:/data
+      - ./docker/redis:/data
     ports:
       - 6379:6379
 
@@ -67,9 +67,4 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: laravel
     volumes:
-      - datapostgres:/var/lib/postgresql/data
-
-volumes:
-    datapostgres:
-    redis_data:
-    mysqldata:
+      - ./docker/postgres:/var/lib/postgresql/data
