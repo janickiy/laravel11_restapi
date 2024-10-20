@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Notes\StoreRequest;
 use App\Http\Requests\Notes\UpdateRequest;
 use App\Models\Notes;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
@@ -19,14 +16,11 @@ class NoteController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
+
 
     /**
      * @OA\Get(
-     *     path="/api/notes",
+     *     path="/api/v1/notes",
      *     summary="Get all notes",
      *     @OA\Response(
      *         response=200,
@@ -51,7 +45,7 @@ class NoteController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/notes/{id}",
+     *     path="/api/v1/notes/{id}",
      *     summary="Get a specific note",
      *     @OA\Parameter(
      *         name="id",
@@ -83,7 +77,7 @@ class NoteController extends Controller
     public function show(int $id): JsonResponse
     {
         $user_id = Auth::user()->id;
-        $note = Notes::where('id', $id)->wheer('user_id', $user_id)->first();
+        $note = Notes::where('id', $id)->where('user_id', $user_id)->first();
 
         if (!$note) {
             return response()->json(['message' => 'Note not found'], Response::HTTP_NOT_FOUND);
@@ -94,7 +88,7 @@ class NoteController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/notes",
+     *     path="/api/v1/notes/store",
      *     summary="Create a new note",
      *     @OA\RequestBody(
      *         required=true,
@@ -123,18 +117,12 @@ class NoteController extends Controller
         $user_id = Auth::user()->id;
         $note = Notes::create(array_merge($request->all(), ['user_id' => $user_id]));
 
-        // Очистка кэша после добавления новой заметки
-        Cache::forget("notes.user.{$user_id}");
-
-        // Логирование события создания заметки
-        Log::info('Note created', ['user_id' => $user_id, 'note_id' => $note->id]);
-
         return response()->json($note, Response::HTTP_CREATED);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/notes/{id}",
+     *     path="/api/v1/notes/update/{id}",
      *     summary="Update an existing note",
      *     @OA\Parameter(
      *         name="id",
@@ -170,32 +158,24 @@ class NoteController extends Controller
      *     )
      * )
      */
-    public function update(UpdateRequest $request): JsonResponse
+    public function update(int $id, UpdateRequest $request): JsonResponse
     {
-        $user_id = Auth::user()->id;
-
-        $note = Notes::find($request->id);
+        $note = Notes::find($id);
 
         if (!$note) {
             return response()->json(['message' => 'Note not found'], Response::HTTP_NOT_FOUND);
         }
 
         $note->title = $request->input('title');
-        $note->description = $request->input('description');
+        $note->content = $request->input('content');
         $note->save();
-
-        // Очистка кэша после обновления заметки
-        Cache::forget("notes.user.{$user_id}");
-
-        // Логирование события обновления заметки
-        Log::info('Note updated', ['user_id' => $user_id, 'note_id' => $note->id]);
 
         return response()->json($note);
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/notes/{id}",
+     *     path="/api/v1/notes/delete/{id}",
      *     summary="Delete a note",
      *     @OA\Parameter(
      *         name="id",
@@ -221,15 +201,7 @@ class NoteController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $user_id = Auth::user()->id;
-
         Notes::destroy($id);
-
-        // Очистка кэша после удаления заметки
-        Cache::forget("notes.user.{ $user_id}");
-
-        // Логирование события удаления заметки
-        Log::info('Note deleted', ['user_id' => $user_id, 'note_id' => $id]);
 
         return response()->json(['message' => 'Note deleted']);
     }

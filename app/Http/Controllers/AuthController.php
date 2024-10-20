@@ -24,7 +24,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/register",
+     *     path="/api/v1/register",
      *     summary="Register a new user",
      *     @OA\RequestBody(
      *         required=true,
@@ -58,7 +58,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/login",
+     *     path="/api/v1/login",
      *     summary="Login a user",
      *     @OA\RequestBody(
      *         required=true,
@@ -89,7 +89,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/logout",
+     *     path="/api/v1/logout",
      *     summary="Logout a user",
      *     @OA\Response(
      *         response=200,
