@@ -18,10 +18,14 @@ docker-compose up --build
 ### Шаг 2: Запуск Docker контейнеров
 docker exec -it myapp bash
 
-	Установка
+    Установка
 
     cp .env.example .env и заполнить необходимыми данными
     composer install
     php artisan migrate
     php artisan key:generate
     php artisan jwt:secret
+
+    Генерация swagger документации
+    
+    php artisan l5-swagger:generate
